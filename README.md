@@ -102,7 +102,7 @@ VisualForge-AI/
 
 ---
 
-## 🎯 Why This Wins
+## 🎯 Why This One.
 
 - **Real problem** — CS students worldwide struggle with visual concepts
 - **Gemini is the core** — remove the API and the app doesn't work. It's not a wrapper, it's the engine
