@@ -5,7 +5,7 @@
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const State = {
-  apiKey: localStorage.getItem('vf_api_key') || 'AIzaSyBOUyeYNwxj875puDkgZXO0bpzvSC7lV_0',
+  apiKey: localStorage.getItem('vf_api_key') || '',
   subject: 'DSA',
   steps: [],
   currentStep: 0,
