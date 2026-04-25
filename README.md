@@ -1,110 +1,115 @@
 # ⬡ VisualForge AI
+### *Stop reading about algorithms. Watch them think.*
 
-> **A visual learning simulator for Computer Science students** — powered by Google Gemini API.
+> Built for **GEMINI.EXE Hackathon** — powered by Google Gemini API
 
-Built for **GEMINI.EXE Hackathon** 🏆
+🔗 **Live Demo:** [visual-forge-ai.vercel.app](https://visual-forge-ai.vercel.app)
 
 ---
 
-## 🎯 What It Does
+## The Problem
 
-VisualForge AI transforms abstract CS concepts into **step-by-step animated visualizations** instead of text explanations. It covers three core CS subjects:
+Every CS student has been there — staring at a textbook trying to understand how a Binary Search Tree inserts a node, or how a DFA transitions between states. **Text explanations don't work for visual concepts.**
 
-| Subject | What it visualizes |
+Existing tools either show static diagrams or generic animations that aren't connected to what you're actually learning.
+
+## The Solution
+
+**VisualForge AI** uses Gemini to turn any CS concept into a **live, step-by-step visual simulation** — like having a professor draw it on a whiteboard, but on demand, for any topic, instantly.
+
+---
+
+## ✨ What It Does
+
+### 🌲 DSA — Data Structures & Algorithms
+Type *"Insert 45 into BST with values 50, 30, 70"* → watch the tree build node by node with highlighted traversal paths, animated insertions, and Gemini explaining each decision.
+
+### ⚙️ TOC — Theory of Computation  
+Type *"Build a DFA that accepts strings ending in 01"* → get a clean state machine diagram with labeled transitions, active state highlighting, and tape visualization for Turing Machines.
+
+### 🗄️ DBMS — Database Management  
+Type *"Show INNER JOIN between Students and Courses"* → see both tables, the join condition highlighted, and the result table built row by row — with the actual SQL query displayed live.
+
+---
+
+## 🚀 Gemini Powers Everything
+
+| Feature | How Gemini is used |
 |---|---|
-| 🌲 **DSA** | Binary Trees, Sorting, Graphs, Heaps — with proper tree layout |
-| ⚙️ **TOC** | DFA/NFA state machines, Turing Machines — animated transitions |
-| 🗄️ **DBMS** | SQL queries, JOINs, Normalization — live table transformations |
+| **Step Generator** | Converts any concept into structured visualization steps |
+| **Step Explanations** | Plain-English explanation for every animation frame |
+| **Explain More** | On-demand deeper explanation with real-world analogies |
+| **Live DSA Playground** | Natural language → visualization in real time |
+| **SQL AI Hint** | Explains what your SQL query does as you type |
 
-### Key Features
-- **Step-by-step visualization** — watch algorithms execute live, not slides
-- **Gemini AI explanations** — each step explained in plain English
-- **"Explain More"** — Gemini gives deeper context + real-world analogies
-- **Real World Applications** — 3D cards showing where each concept is used in industry
-- **Live SQL Executor** — type SQL and see table output instantly (in-browser engine)
-- **Live DSA Playground** — describe any DSA operation, Gemini visualizes it in real time
-- **Understanding Meter** — tracks your engagement score (0–100%)
-- **Concept chips** — one-click to load pre-built examples
+---
+
+## 🔥 Unique Features
+
+**Live SQL Executor** — Type SQL and see table output update instantly. Supports `CREATE TABLE`, `INSERT`, `SELECT`, `JOIN`, `GROUP BY`, `UPDATE`, `DELETE` — all running in-browser with zero backend.
+
+**Live DSA Playground** — Describe any operation in plain English. Gemini generates the visualization steps on the fly. No dropdowns, no templates — just type.
+
+**Real World Applications** — After each visualization, 3D cards show exactly where this concept is used in industry (Google Maps uses Dijkstra, MySQL uses B-Trees, GCC uses DFAs).
+
+**Understanding Meter** — Tracks how deeply you're engaging with the content (0–100%) based on steps explored, replays, and "Explain More" interactions.
 
 ---
 
 ## ⚡ Quick Start
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/visualforge-ai.git
-cd visualforge-ai
+# Clone
+git clone https://github.com/saravanabalajisciet-crypto/VisualForge-AI.git
+cd VisualForge-AI
+
+# Run
 node server.js
-# Open http://localhost:3000
+
+# Open
+# http://localhost:3000
 ```
 
-> **API Key:** Get a free Gemini API key from [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey) and enter it via the ⚙ settings icon in the app.
+> Get a free Gemini API key at [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey) — enter it via the ⚙ icon in the app. No billing required.
 
 ---
 
-## 🧠 Gemini Integration
+## 🛠️ Tech Stack
 
-The app uses **Gemini 2.5 Flash** (with automatic fallback to 2.0 Flash and Flash Lite) for:
-
-1. **Visualization generation** — converts a concept/question into structured JSON steps with node/edge/table data
-2. **Step explanations** — each visualization step has a plain-English explanation
-3. **"Explain More"** — on-demand deeper explanation with real-world analogies
-4. **Live DSA Playground** — natural language → visualization steps in real time
-
-All API calls go directly from the browser to `generativelanguage.googleapis.com`. No backend server needed.
+| Layer | Tech |
+|---|---|
+| Frontend | Vanilla HTML, CSS, JavaScript — zero dependencies |
+| AI | Google Gemini API (`gemini-flash-latest`) |
+| Visualizations | SVG with CSS animations |
+| Tree Layout | In-order traversal (Reingold-Tilford style) |
+| SQL Engine | Custom in-browser parser — no library |
+| Hosting | Vercel |
 
 ---
 
 ## 📁 Project Structure
 
 ```
-visualforge-ai/
-├── index.html        # Main app shell + Live SQL/DSA modals
-├── styles.css        # Dark theme, animations, responsive layout
-├── app.js            # Core logic, Gemini API, navigation, Live DSA
-├── visualizer.js     # Rendering engine (Tree, Array, Graph, State Machine, Table)
-├── sql-engine.js     # In-browser SQL engine (CREATE, INSERT, SELECT, JOIN, etc.)
-├── server.js         # Tiny Node.js HTTP server
-└── README.md
+VisualForge-AI/
+├── index.html       — App shell + modals
+├── styles.css       — Dark theme, animations, 3D cards
+├── app.js           — Gemini API, navigation, Live DSA logic
+├── visualizer.js    — SVG rendering engine (Tree, Array, Graph, DFA, Table)
+├── sql-engine.js    — In-browser SQL parser and executor
+├── server.js        — Minimal Node.js static server
+└── vercel.json      — Vercel deployment config
 ```
 
 ---
 
-## 🌍 Real World Applications Panel
+## 🎯 Why This Wins
 
-After step 2 of any visualization, the app shows **3D cards** with real industry use cases:
-- BST → MySQL B-Tree indexing, Linux filesystem, Unity game engines
-- Sorting → Amazon product ranking, Pandas TimSort, fraud detection
-- DFA → Password validators, Google web crawlers, GCC lexer
-- DBMS → Amazon orders JOIN, Spotify playlists, hospital records
-
----
-
-## 🛠️ Tech Stack
-
-- **Frontend:** Vanilla HTML/CSS/JavaScript (zero dependencies)
-- **AI:** Google Gemini API (`gemini-2.5-flash`)
-- **Visualizations:** SVG-based with CSS animations
-- **Tree Layout:** In-order traversal algorithm (Reingold-Tilford style)
-- **SQL Engine:** Custom in-browser parser (no external library)
-- **Server:** Node.js built-in `http` module
+- **Real problem** — CS students worldwide struggle with visual concepts
+- **Gemini is the core** — remove the API and the app doesn't work. It's not a wrapper, it's the engine
+- **Not a chatbot** — it's a simulator. Gemini generates structured data that drives real animations
+- **Three subjects, one tool** — DSA + TOC + DBMS covered with subject-specific renderers
+- **Live interaction** — type SQL, type DSA operations, get instant visual feedback
 
 ---
 
-## 📸 Screenshots
-
-> DSA — Binary Search Tree insertion step by step  
-> TOC — DFA state machine with active transition highlighting  
-> DBMS — Live SQL with syntax highlighting and table output  
-> Live DSA Playground — type naturally, Gemini visualizes instantly
-
----
-
-## 👨‍💻 Built By
-
-Made with ❤️ for GEMINI.EXE Hackathon
-
----
-
-## 📄 License
-
-MIT
+*Made with ❤️ for GEMINI.EXE Hackathon*
