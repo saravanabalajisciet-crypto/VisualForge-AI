@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VisualForge AI</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-orbs">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">VisualForge <span class="logo-accent">AI</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="header-badge">Learning Simulator</div>
+        <button class="settings-btn" id="settingsBtn" title="API Settings">⚙</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- INPUT PANEL -->
+  <main class="app-container">
+    <section class="input-panel" id="inputPanel">
+      <div class="panel-header">
+        <h1 class="panel-title">See it. Understand it.</h1>
+        <p class="panel-subtitle">Pick a subject, type a concept — watch it come alive step by step.</p>
+      </div>
+
+      <div class="subject-selector">
+        <button class="subject-btn active" data-subject="DSA">
+          <span class="subject-icon">🌲</span>
+          <span class="subject-name">DSA</span>
+          <span class="subject-desc">Trees · Graphs · Sorting</span>
+        </button>
+        <button class="subject-btn" data-subject="TOC">
+          <span class="subject-icon">⚙️</span>
+          <span class="subject-name">TOC</span>
+          <span class="subject-desc">Automata · DFA · NFA</span>
+        </button>
+        <button class="subject-btn" data-subject="DBMS">
+          <span class="subject-icon">🗄️</span>
+          <span class="subject-name">DBMS</span>
+          <span class="subject-desc">Queries · Tables · Joins</span>
+        </button>
+      </div>
+
+      <div class="input-group">
+        <div class="input-wrapper">
+          <textarea id="conceptInput" class="concept-input"
+            placeholder="e.g. How does Binary Search Tree insertion work?" rows="3"></textarea>
+          <div class="input-hint" id="inputHint"></div>
+        </div>
+        <button class="forge-btn" id="forgeBtn">
+          <span class="forge-btn-text">Forge Visualization</span>
+          <span class="forge-btn-icon">→</span>
+        </button>
+      </div>
+
+      <!-- API Key Setup — hidden, accessible via settings -->
+      <div class="api-setup hidden" id="apiSetup">
+        <div class="api-setup-inner">
+          <span class="api-icon">🔑</span>
+          <input type="password" id="apiKeyInput" class="api-key-input" placeholder="Paste your Gemini API key" />
+          <button class="api-save-btn" id="apiSaveBtn">Save</button>
+        </div>
+        <p class="api-note">Stored in your browser only. <a href="https://aistudio.google.com/app/apikey" target="_blank">Get a free key →</a></p>
+      </div>
+    </section>
+
+    <!-- VIZ STAGE -->
+    <section class="viz-stage hidden" id="vizStage">
+
+      <div class="stage-header">
+        <div class="stage-meta">
+          <span class="stage-subject-badge" id="stageBadge">DSA</span>
+          <h2 class="stage-title" id="stageTitle">Loading...</h2>
+        </div>
+        <button class="back-btn" id="backBtn">← New Concept</button>
+      </div>
+
+      <!-- Understanding Meter -->
+      <div class="understanding-bar">
+        <div class="understanding-label">
+          <span>Understanding</span>
+          <span class="understanding-score" id="understandingScore">0%</span>
+        </div>
+        <div class="understanding-track">
+          <div class="understanding-fill" id="understandingFill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="step-counter"><span id="stepIndicator">Step 1 of 1</span></div>
+
+      <!-- Main Visualization Canvas -->
+      <div class="viz-canvas" id="vizCanvas">
+        <div class="viz-loading" id="vizLoading">
+          <div class="loading-spinner"></div>
+          <p>Forging visualization...</p>
+        </div>
+      </div>
+
+      <!-- Step Explanation -->
+      <div class="step-explanation" id="stepExplanation">
+        <div class="explanation-icon">💡</div>
+        <p id="explanationText">Loading...</p>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <button class="ctrl-btn secondary" id="replayBtn" disabled><span>↺</span> Replay</button>
+        <button class="ctrl-btn secondary" id="prevBtn" disabled>← Prev</button>
+        <button class="ctrl-btn primary" id="nextBtn" disabled>Next →</button>
+        <button class="ctrl-btn accent" id="explainMoreBtn" disabled><span>✦</span> Explain More</button>
+      </div>
+
+      <!-- Real World Applications Panel (shown after each step) -->
+      <div class="realworld-panel hidden" id="realworldPanel">
+        <div class="realworld-header">
+          <span>🌍</span>
+          <span>Real World Applications</span>
+        </div>
+        <div class="realworld-cards" id="realworldCards"></div>
+      </div>
+
+      <!-- Simplified / Explain More Panel -->
+      <div class="simplified-panel hidden" id="simplifiedPanel">
+        <div class="simplified-header">
+          <span class="simplified-icon">🧠</span>
+          <span>Deeper Explanation</span>
+        </div>
+        <div class="simplified-content" id="simplifiedContent"></div>
+      </div>
+
+    </section>
+  </main>
+
+  <div class="toast hidden" id="toast"></div>
+
+  <!-- Live SQL Modal -->
+  <div class="sql-modal hidden" id="sqlModal">
+    <div class="sql-modal-inner">
+      <div class="sql-modal-header">
+        <div class="sql-modal-title">
+          <span style="color:var(--cyan)">▶</span> Live SQL Executor
+          <span class="sql-modal-badge">In-Browser Engine</span>
+        </div>
+        <button class="sql-modal-close" id="sqlModalClose">✕</button>
+      </div>
+
+      <div class="sql-layout">
+        <!-- Left: Editor + Controls -->
+        <div class="sql-left">
+          <div class="sql-editor-label">SQL Query <span style="color:var(--green);font-size:0.65rem;font-weight:600;letter-spacing:0.05em">● LIVE</span></div>
+          <textarea id="sqlEditor" class="sql-editor" spellcheck="false"
+            placeholder="-- Results appear as you type!
+CREATE TABLE Students (id INT, name VARCHAR, age INT, grade VARCHAR);
+INSERT INTO Students VALUES (1, 'Arjun', 20, 'A');
+INSERT INTO Students VALUES (2, 'Priya', 21, 'B');
+SELECT * FROM Students;"></textarea>
+
+          <div class="sql-btn-row">
+            <button class="sql-run-btn" id="sqlRunBtn">▶ Run</button>
+            <button class="sql-clear-btn" id="sqlClearBtn">Clear</button>
+            <button class="sql-reset-btn" id="sqlResetBtn">Reset DB</button>
+            <div class="sql-shortcuts">Ctrl+Enter to run</div>
+          </div>
+
+          <!-- AI Hint Box -->
+          <div class="sql-ai-hint hidden" id="sqlAiHint"></div>
+
+          <!-- Quick Templates -->
+          <div class="sql-templates">
+            <div class="sql-templates-label">Quick Templates</div>
+            <div class="sql-template-chips" id="sqlTemplateChips"></div>
+          </div>
+        </div>
+
+        <!-- Right: Output -->
+        <div class="sql-right">
+          <div class="sql-output-label">
+            <span><span class="sql-live-dot"></span>Output</span>
+            <span class="sql-db-info" id="sqlDbInfo">DB: empty</span>
+          </div>
+          <div class="sql-output" id="sqlOutput">
+            <div class="sql-output-empty">Start typing SQL — results appear live</div>
+          </div>
+          <!-- History -->
+          <div class="sql-history-label">History</div>
+          <div class="sql-history" id="sqlHistory"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sql-modal-backdrop hidden" id="sqlModalBackdrop"></div>
+
+  <!-- Live DSA Modal -->
+  <div class="sql-modal hidden" id="dsaModal">
+    <div class="sql-modal-inner">
+      <div class="sql-modal-header">
+        <div class="sql-modal-title">
+          <span style="color:var(--accent)">🌲</span> Live DSA Playground
+          <span class="sql-modal-badge" style="background:rgba(108,99,255,0.12);color:var(--accent3);border-color:rgba(108,99,255,0.25)">Gemini Powered</span>
+        </div>
+        <button class="sql-modal-close" id="dsaModalClose">✕</button>
+      </div>
+
+      <div class="sql-layout">
+        <!-- Left: Input only -->
+        <div class="sql-left">
+          <div class="sql-editor-label">Type your DSA operation <span style="color:var(--green);font-size:0.65rem;font-weight:600">● LIVE</span></div>
+          <textarea id="dsaEditor" class="sql-editor" spellcheck="false" rows="8"
+            placeholder="Just type — visualization appears instantly!
+
+Try:
+  Insert 45 into BST: 50, 30, 70, 20, 40
+  Bubble sort [64, 34, 25, 12, 22, 11]
+  DFS on graph A→B,C  B→D,E  C→F
+  Insert 5 into min heap [10, 15, 20, 17]
+  Quick sort [10, 7, 8, 9, 1, 5]"></textarea>
+
+          <div class="sql-btn-row">
+            <button class="sql-run-btn" id="dsaRunBtn" style="background:linear-gradient(135deg,var(--accent),#8b5cf6)">▶ Visualize</button>
+            <button class="sql-clear-btn" id="dsaClearBtn">Clear</button>
+            <div class="sql-shortcuts">Ctrl+Enter to run</div>
+          </div>
+
+          <!-- AI Explanation -->
+          <div class="sql-ai-hint hidden" id="dsaAiHint"></div>
+
+          <!-- History -->
+          <div class="sql-history-label" style="margin-top:12px">Recent</div>
+          <div class="sql-history" id="dsaHistory"></div>
+        </div>
+
+        <!-- Right: Visualization Output -->
+        <div class="sql-right">
+          <div class="sql-output-label">
+            <span><span class="sql-live-dot" style="background:var(--accent)"></span>Visualization</span>
+            <span id="dsaStepInfo" style="font-size:0.68rem;color:var(--accent3);font-family:var(--mono)"></span>
+          </div>
+          <div class="dsa-viz-output" id="dsaVizOutput">
+            <div class="sql-output-empty">Start typing on the left →</div>
+          </div>
+          <div id="dsaExplanation" class="dsa-explanation hidden"></div>
+
+          <!-- Step controls for multi-step -->
+          <div class="dsa-step-controls hidden" id="dsaStepControls">
+            <button class="ctrl-btn secondary" id="dsaPrevBtn">← Prev</button>
+            <span id="dsaStepLabel" style="font-size:0.78rem;color:var(--text3);font-family:var(--mono)">Step 1 of 1</span>
+            <button class="ctrl-btn primary" id="dsaNextBtn">Next →</button>
+          </div>
+
+          <!-- History -->
+          <div class="sql-history-label" style="margin-top:10px">History</div>
+          <div class="sql-history" id="dsaHistory"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sql-modal-backdrop hidden" id="dsaModalBackdrop"></div>
+
+  <script src="sql-engine.js"></script>
+  <script src="visualizer.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
