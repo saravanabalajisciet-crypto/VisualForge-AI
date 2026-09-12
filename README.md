@@ -27,8 +27,12 @@ Type *"Insert 45 into BST with values 50, 30, 70"* → watch the tree build node
 ### ⚙️ TOC — Theory of Computation  
 Type *"Build a DFA that accepts strings ending in 01"* → get a clean state machine diagram with labeled transitions, active state highlighting, and tape visualization for Turing Machines.
 
+**NEW → TOC Interactive Automata Lab** — A real virtual keyboard appears on screen. Click "1", "0", "1", "1" — watch the DFA/NFA transition live on each keypress. Supports DFA and NFA with multi-state tracking. Includes flashcards + practice test.
+
 ### 🗄️ DBMS — Database Management  
 Type *"Show INNER JOIN between Students and Courses"* → see both tables, the join condition highlighted, and the result table built row by row — with the actual SQL query displayed live.
+
+**NEW → DBMS Live SQL Engineering Lab** — A pre-loaded 6-table sample database (students, departments, courses, enrollments, employees, orders). Write any SQL query, see real results, a visual flow diagram of the operation, and an AI-generated beginner-friendly explanation. Includes flashcards + practice test.
 
 ---
 
@@ -91,11 +95,13 @@ node server.js
 
 ```
 VisualForge-AI/
-├── index.html       — App shell + modals
-├── styles.css       — Dark theme, animations, 3D cards
-├── app.js           — Gemini API, navigation, Live DSA logic
+├── index.html       — App shell + all modals
+├── styles.css       — Dark theme, animations, 3D cards, lab styles
+├── app.js           — Gemini API, navigation, Live DSA/SQL logic
 ├── visualizer.js    — SVG rendering engine (Tree, Array, Graph, DFA, Table)
 ├── sql-engine.js    — In-browser SQL parser and executor
+├── toc-lab.js       — TOC Automata Lab (DFA/NFA engine, virtual keyboard)
+├── dbms-lab.js      — DBMS SQL Lab (sample DB, viz, AI explanation)
 ├── server.js        — Minimal Node.js static server
 └── vercel.json      — Vercel deployment config
 ```
