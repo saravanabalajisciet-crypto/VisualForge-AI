@@ -56,6 +56,7 @@ const CONCEPTS = {
     { label: '▶ Live DSA', q: '__LIVE_DSA__' },
   ],
   TOC: [
+    { label: '⚙ Automata Lab', q: '__TOC_LAB__' },
     { label: 'DFA: ends in 01', q: 'Build a DFA that accepts binary strings ending in 01' },
     { label: 'NFA → DFA', q: 'Convert NFA to DFA with epsilon transitions' },
     { label: 'Even 0s DFA', q: 'DFA that accepts strings with even number of 0s' },
@@ -64,6 +65,7 @@ const CONCEPTS = {
     { label: 'Mealy Machine', q: 'Mealy machine that outputs 1 when last two inputs are 01' },
   ],
   DBMS: [
+    { label: '🗄 SQL Lab', q: '__DBMS_LAB__' },
     { label: 'CREATE TABLE', q: 'CREATE TABLE Students with columns and INSERT rows' },
     { label: 'SELECT + WHERE', q: 'Show SELECT query with WHERE clause on a Students table' },
     { label: 'INNER JOIN', q: 'INNER JOIN between Students and Courses tables step by step' },
@@ -167,10 +169,14 @@ function renderConceptChips() {
     inputGroup.parentNode.insertBefore(container, inputGroup);
   }
   const concepts = CONCEPTS[State.subject] || [];
-  container.innerHTML = concepts.map(c => `
-    <button class="chip-btn" onclick="fillConcept(${JSON.stringify(c.q).replace(/"/g, '&quot;')})">
-      ${c.label}
-    </button>`).join('');
+  container.innerHTML = concepts.map(c => {
+    // Determine extra class for lab launcher chips
+    let extraClass = '';
+    if (c.q === '__TOC_LAB__') extraClass = ' lab-chip';
+    else if (c.q === '__DBMS_LAB__' || c.q === '__LIVE_SQL__') extraClass = ' dbms-lab-chip';
+    else if (c.q === '__LIVE_DSA__') extraClass = ' lab-chip';
+    return `<button class="chip-btn${extraClass}" onclick="fillConcept(${JSON.stringify(c.q).replace(/"/g, '&quot;')})">${c.label}</button>`;
+  }).join('');
 
   // Add chip styles if not present
   if (!$('chipStyles')) {
@@ -187,6 +193,8 @@ function renderConceptChips() {
 function fillConcept(q) {
   if (q === '__LIVE_SQL__') { openLiveSQL(); return; }
   if (q === '__LIVE_DSA__') { openLiveDSA(); return; }
+  if (q === '__TOC_LAB__')  { openTOCLab();  return; }
+  if (q === '__DBMS_LAB__') { openDBMSLab(); return; }
   conceptInput.value = q;
   conceptInput.focus();
 }
@@ -1057,4 +1065,68 @@ document.addEventListener('DOMContentLoaded', () => {
       renderDsaStep();
     }
   });
+});
+
+// ─── TOC Automata Lab ─────────────────────────────────────────────────────────
+function openTOCLab() {
+  if (typeof TOCLab !== 'undefined') {
+    TOCLab.open();
+  } else {
+    showToast('TOC Lab not loaded', 'error');
+  }
+}
+
+// ─── DBMS SQL Engineering Lab ─────────────────────────────────────────────────
+function openDBMSLab() {
+  if (typeof DBMSLab !== 'undefined') {
+    DBMSLab.open();
+  } else {
+    showToast('DBMS Lab not loaded', 'error');
+  }
+}
+
+// Wire up DBMS Lab modal events
+document.addEventListener('DOMContentLoaded', () => {
+  // Run button
+  const dbmsRunBtn = $('dbmsRunBtn');
+  if (dbmsRunBtn) {
+    dbmsRunBtn.addEventListener('click', () => {
+      const sql = $('dbmsLabEditor')?.value?.trim();
+      if (sql) DBMSLab.runQuery(sql);
+    });
+  }
+
+  // Clear button
+  const dbmsClearBtn = $('dbmsClearBtn');
+  if (dbmsClearBtn) {
+    dbmsClearBtn.addEventListener('click', () => {
+      const editor = $('dbmsLabEditor');
+      const output = $('dbmsLabOutput');
+      const viz    = $('dbmsVizPanel');
+      const ai     = $('dbmsAiPanel');
+      if (editor) editor.value = '';
+      if (output) output.innerHTML = '<div class="dbms-output-empty">Write a query and click Run</div>';
+      if (viz)    viz.innerHTML   = '<div class="dbms-viz-empty">Query visualization will appear here</div>';
+      if (ai)     ai.classList.add('hidden');
+    });
+  }
+
+  // Editor keyboard shortcut: Ctrl+Enter to run
+  const dbmsEditor = $('dbmsLabEditor');
+  if (dbmsEditor) {
+    dbmsEditor.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        const sql = dbmsEditor.value.trim();
+        if (sql) DBMSLab.runQuery(sql);
+      }
+      // Tab → 2 spaces
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const s = e.target, st = s.selectionStart;
+        s.value = s.value.substring(0, st) + '  ' + s.value.substring(s.selectionEnd);
+        s.selectionStart = s.selectionEnd = st + 2;
+      }
+    });
+  }
 });

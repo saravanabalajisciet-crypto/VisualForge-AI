@@ -271,8 +271,290 @@ Try:
   </div>
   <div class="sql-modal-backdrop hidden" id="dsaModalBackdrop"></div>
 
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       TOC INTERACTIVE AUTOMATA LAB MODAL
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="lab-modal hidden" id="tocLabModal">
+    <div class="lab-modal-inner">
+
+      <!-- Header -->
+      <div class="lab-modal-header">
+        <div class="lab-modal-title-group">
+          <span class="lab-modal-icon">⚙️</span>
+          <div>
+            <div class="lab-modal-title" id="tocLabTitle">TOC Interactive Automata Lab</div>
+            <div class="lab-modal-subtitle">Click keys · Watch transitions · Understand automata</div>
+          </div>
+          <span class="toc-type-badge dfa" id="tocLabTypeBadge">DFA</span>
+        </div>
+        <button class="lab-modal-close" onclick="TOCLab.close()">✕</button>
+      </div>
+
+      <!-- Tab Bar -->
+      <div class="lab-tab-bar">
+        <button class="toc-tab-btn active" data-tab="lab" onclick="TOCLab.switchTab('lab')">⚙ Lab</button>
+        <button class="toc-tab-btn" data-tab="flashcards" onclick="TOCLab.switchTab('flashcards')">🃏 Flashcards</button>
+        <button class="toc-tab-btn" data-tab="test" onclick="TOCLab.switchTab('test')">📝 Practice Test</button>
+      </div>
+
+      <!-- ── LAB TAB ── -->
+      <div class="toc-tab-panel lab-tab-scroll" id="tocTab_lab">
+        <div class="toc-lab-layout">
+
+          <!-- LEFT: Automaton selector + info -->
+          <div class="toc-left-col">
+            <div class="toc-section-label">Select Automaton</div>
+            <div id="tocAutomatonList" class="toc-automaton-list"></div>
+
+            <div class="toc-section-label" style="margin-top:14px">Description</div>
+            <div id="tocAutomatonDesc" class="toc-automaton-desc"></div>
+
+            <div class="toc-section-label" style="margin-top:12px">Examples</div>
+            <div id="tocExamples" class="toc-examples"></div>
+
+            <div class="toc-section-label" style="margin-top:14px">Transition Table δ</div>
+            <div id="tocTransitionTable" class="toc-delta-wrap"></div>
+          </div>
+
+          <!-- RIGHT: Visualizer + keyboard + history -->
+          <div class="toc-right-col">
+
+            <!-- Status strip -->
+            <div class="toc-status-strip">
+              <span class="toc-status-badge ready" id="tocStatusBadge">● READY</span>
+              <div class="toc-input-display" id="tocInputDisplay">
+                <span class="toc-input-placeholder">∅ — start typing</span>
+              </div>
+              <button class="toc-mini-btn" onclick="TOCLab.clearInput()" title="Clear">CLR</button>
+              <button class="toc-mini-btn accent" onclick="TOCLab.autoRun()" title="Auto-run example">▶▶ Auto</button>
+            </div>
+
+            <!-- SVG Visualizer -->
+            <div class="toc-viz-canvas" id="tocVizCanvas"></div>
+
+            <!-- Explanation -->
+            <div class="toc-explanation info" id="tocExplanation">
+              <span class="toc-exp-icon">💡</span>
+              <span class="toc-exp-text">Press a key on the keyboard to begin! Each keypress processes one symbol through the automaton.</span>
+            </div>
+
+            <!-- Virtual Keyboard -->
+            <div class="toc-kb-wrap">
+              <div class="toc-kb-label">Virtual Keyboard — Click or press physical keys</div>
+              <div id="tocKeyboard" class="toc-keyboard"></div>
+            </div>
+
+            <!-- Transition History -->
+            <div class="toc-section-label" style="margin-top:14px">Transition History</div>
+            <div id="tocTransitionHistory" class="toc-history">
+              <div class="toc-hist-empty">Transitions will appear here as you type...</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FLASHCARDS TAB ── -->
+      <div class="toc-tab-panel hidden lab-tab-scroll" id="tocTab_flashcards">
+        <div class="flashcard-layout">
+          <div class="flashcard-header">
+            <span class="flashcard-title">TOC Flashcards</span>
+            <span class="flashcard-counter" id="tocFlashCounter">1 / 12</span>
+          </div>
+          <div class="flashcard-scene" onclick="TOCLab.flipFlashcard()">
+            <div class="flashcard" id="tocFlashcard">
+              <div class="flashcard-face flashcard-front">
+                <div class="flashcard-face-label">Question</div>
+                <div class="flashcard-text" id="tocFlashFront"></div>
+                <div class="flashcard-hint">Click to reveal answer</div>
+              </div>
+              <div class="flashcard-face flashcard-back">
+                <div class="flashcard-face-label">Answer</div>
+                <div class="flashcard-text" id="tocFlashBack"></div>
+              </div>
+            </div>
+          </div>
+          <div class="flashcard-controls">
+            <button class="flashcard-btn" onclick="TOCLab.prevFlashcard()">← Prev</button>
+            <button class="flashcard-btn accent" onclick="TOCLab.flipFlashcard()">Flip Card</button>
+            <button class="flashcard-btn" onclick="TOCLab.nextFlashcard()">Next →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PRACTICE TEST TAB ── -->
+      <div class="toc-tab-panel hidden lab-tab-scroll" id="tocTab_test">
+        <div class="test-layout">
+          <div class="test-header">
+            <span class="test-title">TOC Practice Test</span>
+            <span class="test-subtitle">8 questions · Automata, DFA, NFA, transitions</span>
+          </div>
+          <div id="tocTestPanel" class="test-panel"></div>
+        </div>
+      </div>
+
+    </div><!-- /lab-modal-inner -->
+  </div>
+  <div class="lab-modal-backdrop hidden" id="tocLabBackdrop" onclick="TOCLab.close()"></div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       DBMS LIVE SQL ENGINEERING LAB MODAL
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="lab-modal hidden" id="dbmsLabModal">
+    <div class="lab-modal-inner">
+
+      <!-- Header -->
+      <div class="lab-modal-header">
+        <div class="lab-modal-title-group">
+          <span class="lab-modal-icon">🗄️</span>
+          <div>
+            <div class="lab-modal-title">DBMS Live SQL Engineering Lab</div>
+            <div class="lab-modal-subtitle">Write SQL · See results · Understand every operation</div>
+          </div>
+          <span class="dbms-lab-badge">In-Browser Engine</span>
+        </div>
+        <button class="lab-modal-close" onclick="DBMSLab.close()">✕</button>
+      </div>
+
+      <!-- Tab Bar -->
+      <div class="lab-tab-bar">
+        <button class="dbms-tab-btn active" data-tab="lab" onclick="DBMSLab.switchTab('lab')">⚡ SQL Lab</button>
+        <button class="dbms-tab-btn" data-tab="schema" onclick="DBMSLab.switchTab('schema')">🗃 Schema</button>
+        <button class="dbms-tab-btn" data-tab="flashcards" onclick="DBMSLab.switchTab('flashcards')">🃏 Flashcards</button>
+        <button class="dbms-tab-btn" data-tab="test" onclick="DBMSLab.switchTab('test')">📝 Practice Test</button>
+      </div>
+
+      <!-- ── SQL LAB TAB ── -->
+      <div class="dbms-tab-panel lab-tab-scroll" id="dbmsTab_lab">
+        <div class="dbms-lab-layout">
+
+          <!-- LEFT: Editor + controls + examples -->
+          <div class="dbms-lab-left">
+
+            <!-- DB Status -->
+            <div class="dbms-seed-status" id="dbmsLabSeedStatus">
+              Loading sample database...
+            </div>
+
+            <div class="dbms-editor-label">
+              SQL Query
+              <span class="dbms-live-indicator"><span class="sql-live-dot"></span>LIVE</span>
+              <span class="dbms-db-info" id="dbmsLabDbInfo">DB: loading...</span>
+            </div>
+
+            <textarea id="dbmsLabEditor" class="dbms-editor" spellcheck="false"
+              placeholder="-- Sample database is pre-loaded! Try:
+SELECT * FROM students;
+SELECT name, age FROM students WHERE age > 20;
+SELECT * FROM students INNER JOIN departments ON students.dept_id = departments.dept_id;
+SELECT grade, COUNT(id) FROM students GROUP BY grade;"></textarea>
+
+            <div class="dbms-btn-row">
+              <button class="dbms-run-btn" id="dbmsRunBtn">▶ Run</button>
+              <button class="dbms-clear-btn" id="dbmsClearBtn">Clear</button>
+              <button class="dbms-reset-btn" onclick="DBMSLab.resetDatabase()">↺ Reset DB</button>
+              <span class="dbms-shortcut">Ctrl+Enter to run</span>
+            </div>
+
+            <!-- AI Explanation Panel -->
+            <div class="dbms-ai-panel hidden" id="dbmsAiPanel">
+              <div class="dbms-ai-label"><span class="dbms-ai-icon">✦</span> AI Explanation</div>
+              <div class="dbms-ai-content" id="dbmsAiContent"></div>
+            </div>
+
+            <!-- Example Queries -->
+            <div class="dbms-examples-label">Example Queries</div>
+            <div id="dbmsExampleChips" class="dbms-example-chips"></div>
+
+          </div>
+
+          <!-- RIGHT: Output + Visualization + History -->
+          <div class="dbms-lab-right">
+
+            <!-- Output -->
+            <div class="dbms-output-label">
+              <span><span class="sql-live-dot"></span>Query Result</span>
+            </div>
+            <div class="dbms-output" id="dbmsLabOutput">
+              <div class="dbms-output-empty">Run a query to see results here</div>
+            </div>
+
+            <!-- Query Visualization -->
+            <div class="dbms-viz-label">
+              <span>📊 Query Visualization</span>
+            </div>
+            <div class="dbms-viz-panel" id="dbmsVizPanel">
+              <div class="dbms-viz-empty">Query visualization will appear here</div>
+            </div>
+
+            <!-- History -->
+            <div class="dbms-hist-label">Query History</div>
+            <div class="dbms-query-history" id="dbmsQueryHistory"></div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SCHEMA TAB ── -->
+      <div class="dbms-tab-panel hidden lab-tab-scroll" id="dbmsTab_schema">
+        <div class="dbms-schema-layout">
+          <div class="dbms-schema-header">
+            <span class="dbms-schema-title">📐 Database Schema</span>
+            <span class="dbms-schema-subtitle">6 sample tables pre-loaded</span>
+          </div>
+          <div id="dbmsSchemaPanel" class="dbms-schema-panel"></div>
+        </div>
+      </div>
+
+      <!-- ── FLASHCARDS TAB ── -->
+      <div class="dbms-tab-panel hidden lab-tab-scroll" id="dbmsTab_flashcards">
+        <div class="flashcard-layout">
+          <div class="flashcard-header">
+            <span class="flashcard-title">DBMS / SQL Flashcards</span>
+            <span class="flashcard-counter" id="dbmsFlashCounter">1 / 14</span>
+          </div>
+          <div class="flashcard-scene" onclick="DBMSLab.flipFlashcard()">
+            <div class="flashcard" id="dbmsFlashcard">
+              <div class="flashcard-face flashcard-front">
+                <div class="flashcard-face-label">Question</div>
+                <div class="flashcard-text" id="dbmsFlashFront"></div>
+                <div class="flashcard-hint">Click to reveal answer</div>
+              </div>
+              <div class="flashcard-face flashcard-back">
+                <div class="flashcard-face-label">Answer</div>
+                <div class="flashcard-text" id="dbmsFlashBack"></div>
+              </div>
+            </div>
+          </div>
+          <div class="flashcard-controls">
+            <button class="flashcard-btn" onclick="DBMSLab.prevFlashcard()">← Prev</button>
+            <button class="flashcard-btn accent" onclick="DBMSLab.flipFlashcard()">Flip Card</button>
+            <button class="flashcard-btn" onclick="DBMSLab.nextFlashcard()">Next →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PRACTICE TEST TAB ── -->
+      <div class="dbms-tab-panel hidden lab-tab-scroll" id="dbmsTab_test">
+        <div class="test-layout">
+          <div class="test-header">
+            <span class="test-title">SQL / DBMS Practice Test</span>
+            <span class="test-subtitle">8 questions · SELECT, JOIN, GROUP BY, WHERE, DML</span>
+          </div>
+          <div id="dbmsTestPanel" class="test-panel"></div>
+        </div>
+      </div>
+
+    </div><!-- /lab-modal-inner -->
+  </div>
+  <div class="lab-modal-backdrop hidden" id="dbmsLabBackdrop" onclick="DBMSLab.close()"></div>
+
+
   <script src="sql-engine.js"></script>
   <script src="visualizer.js"></script>
+  <script src="toc-lab.js"></script>
+  <script src="dbms-lab.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
